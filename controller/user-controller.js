@@ -1,7 +1,7 @@
 var User = require('../models/User.js');
 
 UserController = {};
-
+AllAchievements = [];
 
 UserController.me = function(req, res, render) {
     console.log("User test function");
@@ -13,35 +13,27 @@ UserController.me = function(req, res, render) {
 
 UserController.mock = function(req, res, render) {
     console.log("User mock function");
-    console.log(req.body.language);
-    console.log(req.body.fileString);
+	var achivements = {test: "test string"};
 
-	var achivements = {
-        pendingAchievements: [
-            {
-                name : "hello world",
-                description: "cool dude",
-                image : "no"
-            },
-            {
-                name : "hello world2",
-                description: "cool dude2",
-                image : "no2"
-            },
-
-        ]
-    };
-
+    console.log(req.user)
     res.json(achivements);
 
 };
 
 UserController.save = function(req, res, render) {
     console.log("User save function");
-	var achivements = {test: "save string"};
+	var language = req.body.language;
+	var fileString = req.body.fileString;
+	
+	pendingAchievements = [];
+	for each (var achievement in AllAchievements) {
+		 if(achievement.check(fileString)) {
+			 pendingAchievements.push(achievement);
+		 }
+	}
 
     console.log(req.user)
-    res.json(achivements);
+    res.json(pendingAchievements);
 
 };
 
