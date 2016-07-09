@@ -1,7 +1,9 @@
+'use strict'
+
 var User = require('../models/User.js');
-var mongoose = 
-UserController = {};
-AllAchievements = [];
+
+var UserController = {};
+var AllAchievements = [];
 
 UserController.me = function(req, res, render) {
     console.log("User test function");
@@ -24,17 +26,15 @@ UserController.save = function(req, res, render) {
     console.log("User save function");
 	var language = req.body.language;
 	var fileString = req.body.fileString;
-	
-	pendingAchievements = [];
-	for each (var achievement in AllAchievements) {
-		 if(achievement.check(fileString)) {
-			 pendingAchievements.push(achievement);
-		 }
-	}
 
-    console.log(req.user)
-    res.json(pendingAchievements);
-
+    User.findOne({"githubUsername": user.githubUsername}, function(err, newUser){
+        if (err) return;
+		
+		var pendingAchievements = AllAchievements.filter(function(a) { return (a.language === language || a.language === "general") })
+												 .filter(function(a) { return (user.achievements.indexOf(a) === -1) })
+												 .filter(function(a) { return (a.check(fileString)) });
+    	res.json(pendingAchievements);
+	});
 };
 
 UserController.achievements = function(req, res, render) {
