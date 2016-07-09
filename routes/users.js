@@ -11,5 +11,6 @@ router.get('/', function(req, res, next) {
 
 router.post('/save', userController.mock);
 router.get('/me', userController.me);
+router.get('/achivements/:language', userController.achivements);
 
 module.exports = router;
