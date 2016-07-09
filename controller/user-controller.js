@@ -49,6 +49,6 @@ UserController.achievements = function(req, res, render) {
 	// res.json(languageAchievements)
 
 	var Achievements = require('../models/Achievements')
-	Achievements.find({language: req.params.language}, function(err, a){console.log(a)}
+	Achievements.find({language: req.params.language}, function(err, a){console.log(a)})
 };
 module.exports = UserController;
