@@ -1,5 +1,5 @@
 var User = require('../models/User.js');
-
+var mongoose = 
 UserController = {};
 AllAchievements = [];
 
@@ -38,14 +38,17 @@ UserController.save = function(req, res, render) {
 };
 
 UserController.achievements = function(req, res, render) {
-	language = req.params.language
-	languageAchievements = [];
-	for each (var achievement in AllAchievements) {
-		if (achievement.language === language) {
-			languageAchievements.push(achievement)
-		}
-	}
-	console.log(languageAchievements);
-	res.json(languageAchievements)
+	// language = req.params.language
+	// languageAchievements = [];
+	// for each (var achievement in AllAchievements) {
+	// 	if (achievement.language === language) {
+	// 		languageAchievements.push(achievement)
+	// 	}
+	// }
+	// console.log(languageAchievements);
+	// res.json(languageAchievements)
+
+	var Achievements = require('../models/Achievements')
+	Achievements.find({language: req.params.language}, function(err, a){console.log(a)}
 };
 module.exports = UserController;
