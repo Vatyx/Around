@@ -37,5 +37,15 @@ UserController.save = function(req, res, render) {
 
 };
 
-
+UserController.achievements = function(req, res, render) {
+	language = req.params.language
+	languageAchievements = [];
+	for each (var achievement in AllAchievements) {
+		if (achievement.language === language) {
+			languageAchievements.push(achievement)
+		}
+	}
+	console.log(languageAchievements);
+	res.json(languageAchievements)
+};
 module.exports = UserController;
