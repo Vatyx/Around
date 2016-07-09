@@ -8,7 +8,8 @@ var achievementSchema = mongoose.Schema({
     language    : {type: String,   required: true}, //TODO use enum instead
     checkFn     : {type: Function, required: true},
     points      : {type: Number,   required: true},
+    sample      : {type: String,   required: true},    
 });
 
 
-module.exports = mongoose.model('Achievement', userSchema);
+module.exports = mongoose.model('Achievement', achievementSchema);
