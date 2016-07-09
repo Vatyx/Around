@@ -7,8 +7,15 @@ var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var auth = require('./routes/auth');
+
 
 var app = express();
+
+var mongoose = require('mongoose');
+db = mongoose.connect(process.env.CODE_FIT_URI || "mongodb://localhost/codefit")
+var expressSession = require('express-session');
+var passport = require('passport');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -22,8 +29,17 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+app.use(expressSession({secret: 'secretstuff', resave: true, saveUninitialized: true}));
+app.use(passport.initialize());
+app.use(passport.session());
+
+require('./models/User');
+
+
 app.use('/', routes);
-app.use('/users', users);
+app.use('/user', users);
+app.use('/auth', auth);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
