@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-router.get('/save', userController.mock);
+router.post('/save', userController.mock);
 router.get('/me', userController.me);
 
 module.exports = router;

@@ -13,9 +13,25 @@ UserController.me = function(req, res, render) {
 
 UserController.mock = function(req, res, render) {
     console.log("User mock function");
-	var achivements = {test: "test string"};
+    console.log(req.body.language);
+    console.log(req.body.fileString);
 
-    console.log(req.user)
+	var achivements = {
+        pendingAchievements: [
+            {
+                name : "hello world",
+                description: "cool dude",
+                image : "no"
+            },
+            {
+                name : "hello world2",
+                description: "cool dude2",
+                image : "no2"
+            },
+
+        ]
+    };
+
     res.json(achivements);
 
 };

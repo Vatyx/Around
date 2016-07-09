@@ -3,6 +3,7 @@ var mongoose = require('mongoose');
 var userSchema = mongoose.Schema({
     githubUsername : {type: String, required: true},
     githubEmail    : {type: String, required: true},
+    achievements   : []
     //TODO Add more stuff
 });
 
