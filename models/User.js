@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 var GitHub = require('github-api');
 var Achievements = require('../models/Achievement.js');
 
-var GITHUB_TOKEN = "a1cddf2b65c9e7f6c6fb6ff76da312ec065ef454";
+var GITHUB_TOKEN = process.env.CF_GITHUB_TOKEN;
+if (!GITHUB_TOKEN) throw "You are missing a GITHUB TOKEN in env var CF_GITHUB_TOKEN"
 
 var userSchema = mongoose.Schema({
     githubUsername : {type: String, required: true},
@@ -13,7 +14,6 @@ var userSchema = mongoose.Schema({
         url: {type: String, required: true}
     }]
 });
-    //TODO Add more stuff
 
 userSchema.statics.findOrCreate = function(parameters, callback){
     mongoose.model('User').findOne({"githubUsername": parameters.githubUsername}, function(err, user){
@@ -75,7 +75,6 @@ userSchema.methods.scanRepo = function(username, repoName) {
 };
 
 userSchema.methods.completeAchievements = function(achievements, fileString, repoUrl) {
-    console.log("b")
     var self = this;
     achievements.forEach(function(a){
         //Get Line numbers
@@ -101,10 +100,8 @@ userSchema.methods.completeAchievements = function(achievements, fileString, rep
 userSchema.methods.getAllCode = function(cb) { //TODO change statics to methods
     console.log(this.githubToken);
     var gh = new GitHub({
-        // token: this.githubToken
         token : GITHUB_TOKEN
     });
-
 
     var user = gh.getUser(this.githubUsername);
 
