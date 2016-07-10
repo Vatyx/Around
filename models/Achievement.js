@@ -6,9 +6,9 @@ var achievementSchema = mongoose.Schema({
     description : {type: String,   required: true},
     image       : {type: String,   required: true},
     language    : {type: String,   required: true}, //TODO use enum instead
-    checkFn     : {type: Function, required: true},
+    // checkFn     : {type: Function, required: true}, // TODO fix
     points      : {type: Number,   required: true},
 });
 
 
-module.exports = mongoose.model('Achievement', userSchema);
+module.exports = mongoose.model('Achievement', achievementSchema);

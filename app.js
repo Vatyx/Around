@@ -34,6 +34,8 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 require('./models/User');
+require('./models/Achievement');
+
 
 
 app.use('/', routes);

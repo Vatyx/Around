@@ -45,5 +45,14 @@ UserController.save = function(req, res, render) {
 
 };
 
+//Function to test getAllCode. TODO Remove.
+UserController.test = function(req, res, next) {
+    User.findOne({githubEmail: req.user.githubEmail}, function(err, user){
+        user.getAllCode(function(results){
+            res.json(results);
+        });
+    });
+};
+
 
 module.exports = UserController;
