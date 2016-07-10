@@ -26,25 +26,50 @@ userSchema.statics.findOrCreate = function(parameters, callback){
 //Looks through all of user's code to complete intial achievements
 userSchema.methods.initAll = function(){
     console.log("user init")
+    var self = this;
     this.getAllCode(function(codes){
         console.log(codes);
         codes.forEach(function(code){
+            newAchievements = Achievements.checkFile(this, "JavaScript", code.content);
+            console.log(newAchievements);
 
+            self.completeAchievements(newAchievements, code.content, code.url);
         });
 
     });
 
-
 };
+
+
+userSchema.methods.completeAchievements = function(achievements, fileString, repoUrl) {
+    console.log("b")
+    var self = this;
+    achievements.forEach(function(a){
+        //Get Line numbers
+        console.log(a.pattern);
+        var index = fileString.search(RegExp(a.pattern));
+        var line = fileString.substring(0,index).split("\n").length;
+        var lineUrl = repoUrl + "#L" + line;
+        console.log(lineUrl);
+
+        var achievement = {
+            id : a._id,
+            url: lineUrl
+        };
+
+        self.achievements.push(achievement);
+    })
+
+    this.save(function(){console.log("Achievements probably added");})
+}
 
 
 //Get all code in user's repo
 userSchema.methods.getAllCode = function(cb) { //TODO change statics to methods
-    cb({}); //TODO remove.
     console.log(this.githubToken);
     var gh = new GitHub({
         // token: this.githubToken
-        token : "c685d3ba4a9c050162239911141029cf2922a981"
+        token : "3d650cc683a1d37ca745b24f48941ed5e7696cbc"
     });
 
 
@@ -64,7 +89,7 @@ userSchema.methods.getAllCode = function(cb) { //TODO change statics to methods
         };
         Promise.all(promises).then(function(results){
             console.log("DONE");
-            cb(results)
+            cb(results[0]) //TODO?
         })
     }).catch(function(err){console.log(err)});
 

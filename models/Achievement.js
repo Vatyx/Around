@@ -6,7 +6,7 @@ var achievementSchema = mongoose.Schema({
     description : {type: String,   required: true},
     image       : {type: String,   required: true},
     language    : {type: String,   required: true}, //TODO use enum instead
-    checkFn     : {type: Function, required: true},
+    pattern     : {type: String,   required: true},
     points      : {type: Number,   required: true},
     sample      : {type: String,   required: true},
 });
@@ -21,12 +21,13 @@ achievementSchema.statics.initAchievements = function() {
 }
 
 achievementSchema.statics.checkFile = function(user, language, fileString) {
-    // console.log(fileString);
+    console.log(allAchievements[0].language)
     fulfilledAchievements = allAchievements.filter(function(a) { return a.language === language})
-                                           .filter(function(a){ return a.checkFn(fileString)})
-                                           .filter(function(a) { return (user.achievements.indexOf(a) === -1) });
+                                           .filter(function(a){ console.log(a.pattern);console.log(RegExp(a.pattern).test(fileString)); return RegExp(a.pattern).test(fileString)})
+                                           // .filter(function(a) { return (user.achievements.indexOf(a) === -1) });
 
     console.log(JSON.stringify(fulfilledAchievements));
+
     return fulfilledAchievements;
 }
 

@@ -54,10 +54,8 @@ UserController.test = function(req, res, next) {
 };
 
 UserController.testtest = function(req, res, next) {
-    console.log("test3")
-    User.findOne({"githubUsername": req.user.githubUsername}, function(err, user){
-        console.log(user);
-        console.log(Achievements.checkFile(user, "js", "console.log(1)"));
+    User.findOne({githubEmail: req.user.githubEmail}, function(err, user){
+        user.initAll();
     });
 }
 
