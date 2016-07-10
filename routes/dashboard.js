@@ -3,10 +3,9 @@ var router = express.Router();
 
 var dashboardController = require('../controller/dashboard-controller');
 
-
-/* GET users listing. */
 router.get('/', function(req, res, next) {
-  res.send('respond with a resource');
+	res.render('dashboard');
+	res.end();
 });
 
 router.get('/me', dashboardController.me);
