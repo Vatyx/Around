@@ -1,6 +1,8 @@
 'use strict'
 
 var User = require('../models/User.js');
+var Pulling = require('./pull-controller.js');
+
 
 var UserController = {};
 var AllAchievements = [];
@@ -29,13 +31,23 @@ UserController.save = function(req, res, render) {
 
     User.findOne({"githubUsername": user.githubUsername}, function(err, newUser){
         if (err) return;
-		
+
 		var pendingAchievements = AllAchievements.filter(function(a) { return (a.language === language || a.language === "general") })
 												 .filter(function(a) { return (user.achievements.indexOf(a) === -1) })
 												 .filter(function(a) { return (a.check(fileString)) });
     	res.json(pendingAchievements);
 	});
 };
+
+//Function to test getAllCode. TODO Remove.
+UserController.test = function(req, res, next) {
+    User.findOne({githubEmail: req.user.githubEmail}, function(err, user){
+        user.getAllCode(function(results){
+            res.json(results);
+        });
+    });
+};
+
 
 UserController.achievements = function(req, res, render) {
 	// language = req.params.language
@@ -48,7 +60,9 @@ UserController.achievements = function(req, res, render) {
 	// console.log(languageAchievements);
 	// res.json(languageAchievements)
 
-	var Achievements = require('../models/Achievements')
+	var Achievements = require('../models/Achievements.js')
 	Achievements.find({language: req.params.language}, function(err, a){console.log(a)})
 };
 module.exports = UserController;
+
+
