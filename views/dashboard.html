@@ -8,11 +8,17 @@
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/octicons/3.5.0/octicons.min.css">
 		<!--<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">-->
 		<link href='https://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+		<link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
+		<link rel='stylesheet' href='/stylesheets/prism.css'>
 		<link rel='stylesheet' href='/stylesheets/dashboard.css'>
 	</head>
 
 	<body>
-		
+		<div id="nav">	
+			<div style="float:left;">Vatyx</div> 
+			<div style="float:right;">Total Points: 60  Total Achievements: 15</div>
+		</div>
 		<div id="titles">
 			<div class="title">
 				Current Goals
@@ -24,30 +30,56 @@
 
 		<div id="lists">
 			<div class="list"> 
-				<div class="small-achievement">
-					<div class="img">
-						hello
+				<goal v-for="goal in goals" :goal="goal"></goal>
+			</div>
+			<div class="list">
+				<language v-for="language in languages" :language="language">
+				</language>
+			</div>
+		</div>
+		
+		<template id="goal-template">
+			<div class="small-achievement">
+				<div class="img">
+				</div>
+				<div class="body-achievement">
+					<div class="title-achievement">
+						<div style="float:left;">{{goal.title}}</div> 
+						<div style="float:right; font-size: 30px;">{{goal.points}} points</div>
 					</div>
-					<div class="body-achievement">
-						<div class="title-achievement">
-							This is the title
-						</div>
-						<div class="desc-achievement">
-							This is going to be longer than the title hopefully
-						</div>
+					<div class="desc-achievement">
+						{{goal.desc}}
 					</div>
 				</div>
 			</div>
-			<div class="list">
+			<div class="codesnipet">
+				<pre class="language-javascript">
+					<code>
+						{{goal.code}}
+					</code>
+				</pre>
 			</div>
-		</div>
+		</template>
 
-
-			<!--<div class="hah">-->
-				<!--<h1>Goals</h1>-->
-			<!--</div>-->
-			<!--<div class="hah">-->
-				<!--<div><h1>Languages</h1>9ko0l9u,yhji0o-;p.,hjuyio0pu9ko0l9u,yhji0o-;p.,hjuyio0pu9ko0l9u,yhji0o-;p.,hjuyio0pu9ko0l9u,yhji0o-;p.,hjuyio0pu9ko0l9u,yhji0o-;p.,hjuyio0pu9ko0l9u,yhji0o-;p.,hjuyio0pu9ko0l9u,yhji0o-;p.,hjuyio0pu9ko0l9u,yhji0o-;p.,hjuyio0pu/div>-->
-			<!--</div>-->
+		<template id="language-template">
+			<div class="language">
+				<div class="language-top">
+					<div class="language-img">
+						<img width="100px"src={{language.imgsrc}}>
+					</div>
+					<div class="language-title">
+						{{language.language}}
+					</div>
+				</div>
+				<div class="language-bar">
+					<div class="w3-progress-container w3-light-blue" style="height:.8em">
+						<div class="w3-progressbar w3-blue" style="width:{{language.progress}}%"></div>
+					</div>
+				</div>
+			</div>
+		</template>
+		<script src="/bower_components/vue/dist/vue.min.js"></script>
+		<script src="/scripts/prism.js"></script>
+		<script src="/scripts/script.js"></script>
 	</body>
 </html>
