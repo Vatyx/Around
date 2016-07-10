@@ -30,8 +30,8 @@ achievementSchema.statics.checkFile = function(user, language, fileString) {
                                                 for (i in user.achievements){
                                                     if (user.achievements[i].id == a._id) return false;
                                                 }
-                                                return true
-                                        });
+                                                return true;
+                                            });
 
     console.log(JSON.stringify(fulfilledAchievements));
 
