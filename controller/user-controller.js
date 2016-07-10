@@ -2,6 +2,8 @@
 
 var User = require('../models/User.js');
 var Pulling = require('./pull-controller.js');
+var mongoose = require('mongoose');
+
 
 
 var UserController = {};
@@ -47,6 +49,19 @@ UserController.test = function(req, res, next) {
         });
     });
 };
+
+UserController.testtest = function(req, res, next) {
+    console.log("test2")
+    mongoose.model('User').find({}, function(err, users){
+        console.log(err)
+        console.log(JSON.stringify(users))
+        res.send("OK")
+    })
+    // mongoose.model('Achievement').create({name:"name"}, function(err, a){
+    //     console.log(JSON.stringify(a));
+    //     mongoose.model('Achievement').find({}, function(err, aa){console.log("A"); console.log(aa); });
+    // });
+}
 
 
 UserController.achievements = function(req, res, render) {

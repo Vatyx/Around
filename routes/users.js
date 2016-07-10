@@ -21,4 +21,6 @@ router.get('/eventtest', pullController.start);
 
 router.get('/allcode', authenticate, userController.test);
 
+router.get('/testtest', userController.testtest)
+
 module.exports = router;

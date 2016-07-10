@@ -6,24 +6,48 @@ var userSchema = mongoose.Schema({
     githubUsername : {type: String, required: true},
     githubEmail    : {type: String, required: true},
     githubToken    : {type: String, required: true},
-    // achievements   : []
-    //TODO Add more stuff
 });
+    // achievements   : [{
+    //     id : {type: String, required: true},
+    //     url: {type: String, required: true}
+    // }]
+    //TODO Add more stuff
 
 userSchema.statics.findOrCreate = function(parameters, callback){
     mongoose.model('User').findOne({"githubUsername": parameters.githubUsername}, function(err, user){
         if (err) return callback(err);
         if(user) return callback(null, user);
-        mongoose.model('User').create(parameters, function (err, user){user.init; callback(err,user)});
+        // mongoose.model('User').create(parameters, function (err, user){user.init(); callback(err,user)});
+        mongoose.model('User').create(parameters, callback);
+
     });
 };
 
+//Looks through all of user's code to complete intial achievements
+userSchema.methods.initAll = function(){
+    console.log("user init")
+    // this.getAllCode(function(code){
+    //     console.log(code);
+
+    // });
+
+
+};
+
+userSchema.methods.noWay = function(){
+    console.log("NO FUCKIG WAY")
+}
+
+
+
+
 //Get all code in user's repo
 userSchema.methods.getAllCode = function(cb) { //TODO change statics to methods
+    cb({}); //TODO remove.
     console.log(this.githubToken);
     var gh = new GitHub({
         // token: this.githubToken
-        token : "3daef80ab5c142d81b64b1f39a7e6ccd47f35fbc"
+        token : "c685d3ba4a9c050162239911141029cf2922a981"
     });
 
 
@@ -109,7 +133,6 @@ userSchema.methods.getAllCode = function(cb) { //TODO change statics to methods
 
 };
 
-//TODO
-userSchema.methods.init = function(){};
+
 
 module.exports = mongoose.model('User', userSchema);
