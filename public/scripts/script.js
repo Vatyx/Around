@@ -99,7 +99,7 @@ var another = new Vue({
 var ex = new Vue({
 	el: "#expanding",
 	data: {
-	expand: [{
+	expands: [{
 				name: "Test",
 				points: 15,
 				desc: "sdafasdfasdf",
@@ -127,9 +127,9 @@ $.get("/dashboard/info", function(data){
 	var allAchievements = data["allAchievements"];
 	for(var i = 0; i < allAchievements.length; i++) {
 		if(data["completedAchievements"].indexOf(allAchievements[i]) === -1) {
-			allAchievements[i].back = "lightgreen";	
+			allAchievements[i].back = "white";	
 		} else {
-			allAchievements[i].back = "white";
+			allAchievements[i].back = "lightgreen";
 		}
 		achievements.push(allAchievements[i]);
 	}
@@ -172,7 +172,9 @@ $.get("/dashboard/info", function(data){
 }, 5000);
 
 function loadNew() {
-	
+	var str = $(this).attr("id");		
+	temp = achievements.filter(function(a) { return (a.name === str)});
+	ex.expands = temp;	
 }
 
 function nextPage() {
