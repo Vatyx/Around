@@ -40,10 +40,39 @@
 		</div>
 
 		<div class="unique" style="position: absolute; left: 0; top: 5%; display: none;" id="lists">
-			<div class="list"> 
+			<div class="list" id="mine"> 
 				<achievement v-for="achievement in achievements" :achievement="achievement"></achievement>
 			</div>
-			<div class="list">
+			<div class="list" style="justify-content:center;" id="template">
+				<div class="expand">
+					<div class="eTitle">
+						{{achievement.title}}
+					</div>
+					<div class="eDesc">
+						{{achievement.desc}}
+					</div>
+					<div class="eCode">
+						<pre class="language-javascript">
+							<code>
+								{{achievement.sample}}
+							</code>
+						</pre>
+					</div>
+					<div class="eSuggest">
+						How to complete
+						<ul>
+							<li>
+								Open up a new file in atom
+							</li>
+							<li>
+								{{achievement.desc}}
+							</li>
+							<li>
+								Commit and submit!
+							</li>
+						</ul>
+					</div>
+				</div>
 			</div>
 		</div>
 		
@@ -64,7 +93,7 @@
 			<div class="codesnipet">
 				<pre class="language-javascript">
 					<code>
-						{{goal.code}}
+						{{goal.sample}}
 					</code>
 				</pre>
 			</div>

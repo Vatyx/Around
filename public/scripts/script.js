@@ -46,7 +46,7 @@ var vm = new Vue({
 					language: "Javascript",
 					progress: 80
 				}],
-    achievement: [{
+    achievements: [{
                 title: "Oh looky a title",
                 points: 15,
 				desc: "This will be more descriptive once we have actual achievements",
@@ -64,6 +64,28 @@ var vm = new Vue({
   }
 });
 
+var another = new Vue({
+  el: "#mine",
+  data: {
+    achievements: [{
+                title: "Oh looky a title",
+                points: 15,
+				desc: "This will be more descriptive once we have actual achievements",
+            },
+            {
+                title: "Oh looky a title",
+                points: 15,
+				desc: "This will be more descriptive once we have actual achievements",
+            },
+            {
+				title: "Oh looky a title",
+				points: 15,
+				desc: "This will be more descriptive once we have actual achievements",
+            }]
+  }
+});
+
+
 $.fn.extend({
     animateCss: function (animationName) {
         var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
@@ -72,6 +94,31 @@ $.fn.extend({
         });
     }
 });
+
+$.get("/dashboard/info", function(data){
+	console.log(data);
+	var	achievements = [];
+	var goals = [];
+	var allAchievements = data["allAchievements"];
+	for(var i = 0; i < allAchievements.length; i++) {
+		if(data["completedAchievements"].indexOf(allAchievements[i]) === -1) {
+			allAchievements[i].completed = true;	
+		} else {
+			allAchievements[i].completed = false;
+		}
+		achievements.push(allAchievements[i]);
+	}
+	for(var i = 0; i < 5; i++) {
+		goals.push(allAchievements[i]);
+	}
+	vm.goals = goals;
+	another.achievements = achievements;
+	
+});
+
+function loadNew() {
+	
+}
 
 function nextPage() {
 	currentLanguage = $(this).attr("id");
