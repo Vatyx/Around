@@ -144,6 +144,33 @@ $.get("/dashboard/info", function(data){
 	
 });
 
+setInterval(function () {
+$.get("/dashboard/info", function(data){
+	console.log(data);
+	var	achievements = [];
+	var goals = [];
+	var allAchievements = data["allAchievements"];
+	for(var i = 0; i < allAchievements.length; i++) {
+		if(data["completedAchievements"].indexOf(allAchievements[i]) === -1) {
+			allAchievements[i].color = "white";	
+		} else {
+			allAchievements[i].color = "lightgreen";
+		}
+		achievements.push(allAchievements[i]);
+	}
+	for(var i = 0; i < 5; i++) {
+		goals.push(allAchievements[i]);
+	}
+	vm.goals = goals;
+	another.achievements = achievements;
+
+	temp = allAchievements.filter(function(a) {return (a.completed === true)});
+	obj = {imgsrc:"https://camo.githubusercontent.com/eb464a60a4a47f8b600aa71bfbc6aff3fe5c5392/68747470733a2f2f7261772e6769746875622e636f6d2f766f6f646f6f74696b69676f642f6c6f676f2e6a732f6d61737465722f6a732e706e67", language: "Javascript", progress: (temp.length / allAchievements.length) * 100}
+	
+});
+	
+}, 5000);
+
 function loadNew() {
 	
 }
