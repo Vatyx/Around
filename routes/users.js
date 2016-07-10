@@ -14,13 +14,13 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-router.post('/save', userController.mock);
+router.post('/save', userController.save);
 router.get('/me', userController.me);
 router.get('/achivements/:language', userController.achievements);
 router.get('/eventtest', pullController.start);
 
 router.get('/allcode', authenticate, userController.test);
 
-router.get('/testtest', userController.testtest)
+router.get('/testtest', authenticate, userController.testtest)
 
 module.exports = router;

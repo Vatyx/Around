@@ -9,6 +9,11 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var auth = require('./routes/auth');
 var dashboard = require('./routes/dashboard');
+
+var achievements = require('./routes/achievements');
+
+var admin = require('./routes/admin');
+
 var engine = require("consolidate");
 
 var app = express();
@@ -44,6 +49,12 @@ app.use('/', routes);
 app.use('/user', users);
 app.use('/auth', auth);
 app.use('/dashboard', dashboard);
+app.use('/admin', admin);
+
+
+app.use('/achievements', achievements);
+
+app.use('/admin', admin);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
