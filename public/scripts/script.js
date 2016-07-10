@@ -174,7 +174,7 @@ $.get("/dashboard/info", function(data){
 
 function loadNew() {
 	console.log("loading new");
-	var str = $(this).attr("id");		
+	var str = $(this).attr("data-id");		
 	console.log(str, "is this");
 	temp = achievements.filter(function(a) { return (a.name === str)});
 	console.log(temp);
