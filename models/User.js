@@ -1,29 +1,90 @@
 var mongoose = require('mongoose');
 var GitHub = require('github-api');
+var Achievements = require('../models/Achievement.js');
 
+var GITHUB_TOKEN = "a1cddf2b65c9e7f6c6fb6ff76da312ec065ef454";
 
 var userSchema = mongoose.Schema({
     githubUsername : {type: String, required: true},
     githubEmail    : {type: String, required: true},
     githubToken    : {type: String, required: true},
-    // achievements   : []
-    //TODO Add more stuff
+    achievements   : [{
+        id : {type: String, required: true},
+        url: {type: String, required: true}
+    }]
 });
+    //TODO Add more stuff
 
 userSchema.statics.findOrCreate = function(parameters, callback){
     mongoose.model('User').findOne({"githubUsername": parameters.githubUsername}, function(err, user){
         if (err) return callback(err);
         if(user) return callback(null, user);
-        mongoose.model('User').create(parameters, function (err, user){user.init; callback(err,user)});
+        mongoose.model('User').create(parameters, function (err, user){user.initAll(); callback(err,user)});
     });
 };
+
+//Looks through all of user's code to complete intial achievements
+userSchema.methods.initAll = function(){
+    console.log("user init")
+    var self = this;
+    this.getAllCode(function(codes){
+        codes.forEach(function(code){
+            newAchievements = Achievements.checkFile(self, "JavaScript", code.content);
+            console.log(newAchievements);
+
+            self.completeAchievements(newAchievements, code.content, code.url);
+        });
+
+    });
+
+};
+
+userSchema.methods.scanRepo = function(username, repoName) {
+    var gh = new GitHub({token : GITHUB_TOKEN});
+    var repo = gh.getRepo(username, repoName);
+    var self = this;
+
+    getRepoFiles(repo).then(function(codes){
+        codes.forEach(function(code){
+            newAchievements = Achievements.checkFile(self, "JavaScript", code.content);
+            console.log(newAchievements);
+
+            self.completeAchievements(newAchievements, code.content, code.url);
+        });
+    });
+
+
+};
+
+userSchema.methods.completeAchievements = function(achievements, fileString, repoUrl) {
+    console.log("b")
+    var self = this;
+    achievements.forEach(function(a){
+        //Get Line numbers
+        console.log(a.pattern);
+        var index = fileString.search(RegExp(a.pattern));
+        var line = fileString.substring(0,index).split("\n").length;
+        var lineUrl = repoUrl + "#L" + line;
+        console.log(lineUrl);
+
+        var achievement = {
+            id : a._id,
+            url: lineUrl
+        };
+
+        self.achievements.push(achievement);
+    })
+
+    this.save(function(){console.log("Achievements probably added");})
+}
+
 
 //Get all code in user's repo
 userSchema.methods.getAllCode = function(cb) { //TODO change statics to methods
     console.log(this.githubToken);
     var gh = new GitHub({
         // token: this.githubToken
-        token : "3daef80ab5c142d81b64b1f39a7e6ccd47f35fbc"
+        token : GITHUB_TOKEN
     });
 
 
@@ -43,73 +104,73 @@ userSchema.methods.getAllCode = function(cb) { //TODO change statics to methods
         };
         Promise.all(promises).then(function(results){
             console.log("DONE");
-            cb(results)
+            cb(results[0]) //TODO?
         })
     }).catch(function(err){console.log(err)});
 
-    function getRepoFiles(repo) {
-        console.log("Getting all files in repo: " + repo.__fullname);
-
-        return new Promise(
-                function(resolve, reject) {
-                    getRepoFilePaths(repo).then(function(files){
-                        console.log("   Getting contents for all files....")
-                        getFiles(repo, files).then(function(content){
-
-                            var results = [];
-                            for (i in content){
-                                var file = content[i].data;
-
-                                var code = {
-                                    path    : file.path,
-                                    url     : file.html_url,
-                                    content : new Buffer(file.content, 'base64').toString("ascii")
-                                }
-
-                                results.push(code);
-                            }
-                            console.log("    Got contents for repo: " + repo.__fullname);
-                            resolve(results);
-                        });
-                    })
-                }
-
-            )
-    }
-
-    function getRepoFilePaths(repo){
-        return new Promise(
-                function(resolve, reject) {
-                    repo.getRef('').then(function(ref){
-                        var treeSha = ref.data[0].object.sha;
-                        repo.getTree(treeSha+"?recursive=1").then(function(tree){
-                            tree = tree.data.tree;
-                            var files = tree.filter(function(a){ return a.type === 'blob'}).map(function(a){ return a.path});
-                            resolve(files);
-                        });
-                    });
-
-                }
-            );
-    };
-
-    function getFiles(repo, files){
-        console.log("getfiles")
-        var promises = [];
-        for (i in files) {
-            //Only get JS files for now
-            var fileType = files[i].split('.').pop()
-            if (fileType === 'js' || fileType === "java"){
-                console.log(files[i])
-                promises.push(repo.getContents('master', files[i], false));
-            }
-        }
-        return Promise.all(promises);
-    }
 
 };
 
-//TODO
-userSchema.methods.init = function(){};
+function getRepoFiles(repo) {
+    console.log("Getting all files in repo: " + repo.__fullname);
+
+    return new Promise(
+            function(resolve, reject) {
+                getRepoFilePaths(repo).then(function(files){
+                    console.log("   Getting contents for all files....")
+                    getFiles(repo, files).then(function(content){
+
+                        var results = [];
+                        for (i in content){
+                            var file = content[i].data;
+
+                            var code = {
+                                path    : file.path,
+                                url     : file.html_url,
+                                content : new Buffer(file.content, 'base64').toString("ascii")
+                            }
+
+                            results.push(code);
+                        }
+                        console.log("    Got contents for repo: " + repo.__fullname);
+                        resolve(results);
+                    });
+                })
+            }
+
+        )
+}
+
+function getRepoFilePaths(repo){
+    return new Promise(
+            function(resolve, reject) {
+                repo.getRef('').then(function(ref){
+                    var treeSha = ref.data[0].object.sha;
+                    repo.getTree(treeSha+"?recursive=1").then(function(tree){
+                        tree = tree.data.tree;
+                        var files = tree.filter(function(a){ return a.type === 'blob'}).map(function(a){ return a.path});
+                        resolve(files);
+                    });
+                });
+
+            }
+        );
+};
+
+function getFiles(repo, files){
+    console.log("getfiles")
+    var promises = [];
+    for (i in files) {
+        //Only get JS files for now
+        var fileType = files[i].split('.').pop()
+        if (fileType === 'js' || fileType === "java"){
+            console.log(files[i])
+            promises.push(repo.getContents('master', files[i], false));
+        }
+    }
+    return Promise.all(promises);
+}
+
+
 
 module.exports = mongoose.model('User', userSchema);
