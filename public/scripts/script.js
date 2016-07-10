@@ -177,12 +177,12 @@ $.get("/dashboard/info", function(data){
 }, 5000);
 
 function loadNew(id) {
-	console.log("loading new");
 	var str = id;
-	console.log(str, "is this");
-	temp = test.filter(function(a) { return (a.name === str)});
-	console.log(temp);
-	ex.expands = [temp];	
+$.get("/dashboard/info", function(data){
+	var allAchievements = data["allAchievements"];
+	temp = allAchievements.filter(function(a) { return (a.name === str)});
+	ex.expands = temp;
+});
 }
 
 function nextPage() {
