@@ -34,7 +34,9 @@ UserController.save = function(req, res, next) {
     console.log("User save function");
 	var language = req.body.language;
 	var fileString = req.body.fileString;
-    var username = 'Fertogo';//TODO
+    var username = req.body.username || 'Fertogo';//TODO
+
+    console.log(username);
 
 
     User.findOne({"githubUsername": username}, function(err, user){
