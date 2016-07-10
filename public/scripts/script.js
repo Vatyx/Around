@@ -15,6 +15,11 @@ Vue.component('achievement', {
   props: ['achievement']
 });
 
+Vue.component('expand', {
+  template: "#expand-template",
+  props: ['expand']
+});
+
 var vm = new Vue({
   el: "#lists",
   data: {
@@ -81,8 +86,26 @@ var another = new Vue({
 				title: "Oh looky a title",
 				points: 15,
 				desc: "This will be more descriptive once we have actual achievements",
-            }]
+            }],
+	expands: [{
+				title: "name",
+				points: 15,
+				desc: "sdafasdfasdf",
+				sample: "asdfhasdklfjasd"
+			}]
   }
+});
+
+var ex = new Vue({
+	el: "#expanding",
+	data: {
+	expand: [{
+				name: "Test",
+				points: 15,
+				desc: "sdafasdfasdf",
+				sample: "asdfhasdklfjasd"
+			}]
+	}
 });
 
 
@@ -95,6 +118,8 @@ $.fn.extend({
     }
 });
 
+var achievements = [];
+
 $.get("/dashboard/info", function(data){
 	console.log(data);
 	var	achievements = [];
@@ -102,9 +127,9 @@ $.get("/dashboard/info", function(data){
 	var allAchievements = data["allAchievements"];
 	for(var i = 0; i < allAchievements.length; i++) {
 		if(data["completedAchievements"].indexOf(allAchievements[i]) === -1) {
-			allAchievements[i].completed = true;	
+			allAchievements[i].back = "lightgreen";	
 		} else {
-			allAchievements[i].completed = false;
+			allAchievements[i].back = "white";
 		}
 		achievements.push(allAchievements[i]);
 	}

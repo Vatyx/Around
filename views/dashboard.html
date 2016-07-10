@@ -43,18 +43,23 @@
 			<div class="list" id="mine"> 
 				<achievement v-for="achievement in achievements" :achievement="achievement"></achievement>
 			</div>
-			<div class="list" style="justify-content:center;" id="template">
+			<div class="list" id="expanding" style="justify-content:center;" id="template">
+				<expand v-for="expand in expands" :expand="expand"></expand>
+			</div>
+		</div>
+
+		<template id="expand-template">
 				<div class="expand">
 					<div class="eTitle">
-						{{achievement.title}}
+						{{expand.name}}
 					</div>
 					<div class="eDesc">
-						{{achievement.desc}}
+						{{expand.description}}
 					</div>
 					<div class="eCode">
 						<pre class="language-javascript">
 							<code>
-								{{achievement.sample}}
+								{{expand.sample}}
 							</code>
 						</pre>
 					</div>
@@ -65,7 +70,7 @@
 								Open up a new file in atom
 							</li>
 							<li>
-								{{achievement.desc}}
+								{{expand.description}}
 							</li>
 							<li>
 								Commit and submit!
@@ -73,8 +78,7 @@
 						</ul>
 					</div>
 				</div>
-			</div>
-		</div>
+		</template>
 		
 		<template id="goal-template">
 			<div class="small-achievement">
@@ -100,7 +104,7 @@
 		</template>
 
 		<template id="achievement-template">
-			<div class="small-achievement">
+			<div style="background-color: {{achievement.back}}; class="small-achievement">
 				<div class="img">
 				</div>
 				<div class="body-achievement">
