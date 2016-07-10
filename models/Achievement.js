@@ -19,6 +19,10 @@ achievementSchema.statics.initAchievements = function() {
     });
 }
 
+achievementSchema.statics.getAll = function(){
+    return allAchievements;
+}
+
 achievementSchema.statics.checkFile = function(user, language, fileString) {
     console.log("Checking if File has new achievements")
     fulfilledAchievements = allAchievements.filter(function(a){ return a.language === language})

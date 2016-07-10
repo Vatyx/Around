@@ -62,18 +62,10 @@ UserController.testtest = function(req, res, next) {
 
 
 UserController.achievements = function(req, res, render) {
-	// language = req.params.language
-	// languageAchievements = [];
-	// for each (var achievement in AllAchievements) {
-	// 	if (achievement.language === language) {
-	// 		languageAchievements.push(achievement)
-	// 	}
-	// }
-	// console.log(languageAchievements);
-	// res.json(languageAchievements)
 
-	var Achievements = require('../models/Achievements.js')
-	Achievements.find({language: req.params.language}, function(err, a){console.log(a)})
+	Achievements.find({language: req.params.language}, function(err, a){
+        res.json(a);
+    })
 };
 module.exports = UserController;
 

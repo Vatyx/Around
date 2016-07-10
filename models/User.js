@@ -39,6 +39,24 @@ userSchema.methods.initAll = function(){
 
 };
 
+userSchema.methods.getPoints = function() {
+    var self = this;
+    return new Promise(
+        function(resolve, reject){
+                console.log("a");
+                var ids = self.achievements.map(function(a){return a.id});
+                console.log("bdc");
+
+                Achievements.find({_id : {$in:ids}}, function(err,ac) {
+                    console.log(ac);
+                    var result = ac.reduce(function(a,b){return a + b.points},0);
+                    console.log(result);
+                    resolve(result);
+                })
+            })
+
+}
+
 userSchema.methods.scanRepo = function(username, repoName) {
     var gh = new GitHub({token : GITHUB_TOKEN});
     var repo = gh.getRepo(username, repoName);

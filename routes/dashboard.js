@@ -10,4 +10,6 @@ router.get('/', function(req, res, next) {
 
 router.get('/me', dashboardController.me);
 
+router.get('/info', dashboardController.getInfo);
+
 module.exports = router;
