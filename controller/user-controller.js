@@ -1,6 +1,8 @@
 'use strict'
 
 var User = require('../models/User.js');
+var Pulling = require('./pull-controller.js');
+
 
 var UserController = {};
 var AllAchievements = [];
@@ -48,7 +50,9 @@ UserController.achievements = function(req, res, render) {
 	// console.log(languageAchievements);
 	// res.json(languageAchievements)
 
-	var Achievements = require('../models/Achievements')
+	var Achievements = require('../models/Achievements.js')
 	Achievements.find({language: req.params.language}, function(err, a){console.log(a)})
 };
 module.exports = UserController;
+
+

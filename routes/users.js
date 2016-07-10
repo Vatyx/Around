@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 var userController = require('../controller/user-controller');
+var pullController = require('../controller/pull-controller');
 
 
 /* GET users listing. */
@@ -12,5 +13,6 @@ router.get('/', function(req, res, next) {
 router.post('/save', userController.mock);
 router.get('/me', userController.me);
 router.get('/achivements/:language', userController.achievements);
+router.get('/eventtest', pullController.start);
 
 module.exports = router;
