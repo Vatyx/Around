@@ -18,26 +18,26 @@ passport.use(new GitHubStrategy({
         clientID: 'e8fb29470d9300f226b0',
         clientSecret: '6d74d44bd0e389a3eb783d1a554c7942e71ca3f4',
         callbackURL: "http://localhost:3000" + "/auth/callback" }, function(accessToken, refreshToken, profile, done) {
-            console.log(refreshToken);
-            console.log(profile);
+            console.log("Logged in")
             mongoose.model('User')
                 .findOrCreate({ githubUsername: profile.username,
                                 githubEmail: profile.emails ? profile.emails[0].value : "no@email.com",
                                 githubToken: accessToken,
                                },
                 function (err, user) {
+                    console.log("done?")
                     return done(err, user);
                 });
         }
 ));
 
-router.get('/',
-    passport.authenticate('github'));
+router.get('/',passport.authenticate('github'));
 
 router.get('/callback',
     passport.authenticate('github', { failureRedirect: '/' }),
         function(req, res) {
-            res.redirect('/user/allcode'); //TODO change
+            console.log("call")
+            res.redirect('/'); //TODO change
         }
     );
 
