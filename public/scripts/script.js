@@ -123,7 +123,7 @@ var mock = {"username":"codefitTEst","completedAchievements":[{"id":"5781ec2dfce
 
 $.get("/dashboard/info", function(data){
 	console.log(data);
-	var	achievements = [];
+	achievements = [];
 	var goals = [];
 	var allAchievements = data["allAchievements"];
 	for(var i = 0; i < allAchievements.length; i++) {
@@ -149,7 +149,7 @@ $.get("/dashboard/info", function(data){
 setInterval(function () {
 $.get("/dashboard/info", function(data){
 	console.log(data);
-	var	achievements = [];
+	achievements = [];
 	var goals = [];
 	var allAchievements = data["allAchievements"];
 	for(var i = 0; i < allAchievements.length; i++) {
