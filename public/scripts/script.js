@@ -173,16 +173,14 @@ $.get("/dashboard/info", function(data){
 	
 }, 5000);
 
-function loadNew() {
+function loadNew(id) {
 	console.log("loading new");
-	var str = $(this).attr("data-id");		
+	var str = id;
 	console.log(str, "is this");
 	temp = achievements.filter(function(a) { return (a.name === str)});
 	console.log(temp);
 	ex.expands = [temp];	
 }
-
-$(".small-achievement").click(loadNew);
 
 function nextPage() {
 	currentLanguage = $(this).attr("id");
