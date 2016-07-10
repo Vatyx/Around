@@ -30,7 +30,7 @@ userSchema.methods.initAll = function(){
     this.getAllCode(function(codes){
         console.log(codes);
         codes.forEach(function(code){
-            newAchievements = Achievements.checkFile(this, "JavaScript", code.content);
+            newAchievements = Achievements.checkFile(self, "JavaScript", code.content);
             console.log(newAchievements);
 
             self.completeAchievements(newAchievements, code.content, code.url);
@@ -93,67 +93,68 @@ userSchema.methods.getAllCode = function(cb) { //TODO change statics to methods
         })
     }).catch(function(err){console.log(err)});
 
-    function getRepoFiles(repo) {
-        console.log("Getting all files in repo: " + repo.__fullname);
-
-        return new Promise(
-                function(resolve, reject) {
-                    getRepoFilePaths(repo).then(function(files){
-                        console.log("   Getting contents for all files....")
-                        getFiles(repo, files).then(function(content){
-
-                            var results = [];
-                            for (i in content){
-                                var file = content[i].data;
-
-                                var code = {
-                                    path    : file.path,
-                                    url     : file.html_url,
-                                    content : new Buffer(file.content, 'base64').toString("ascii")
-                                }
-
-                                results.push(code);
-                            }
-                            console.log("    Got contents for repo: " + repo.__fullname);
-                            resolve(results);
-                        });
-                    })
-                }
-
-            )
-    }
-
-    function getRepoFilePaths(repo){
-        return new Promise(
-                function(resolve, reject) {
-                    repo.getRef('').then(function(ref){
-                        var treeSha = ref.data[0].object.sha;
-                        repo.getTree(treeSha+"?recursive=1").then(function(tree){
-                            tree = tree.data.tree;
-                            var files = tree.filter(function(a){ return a.type === 'blob'}).map(function(a){ return a.path});
-                            resolve(files);
-                        });
-                    });
-
-                }
-            );
-    };
-
-    function getFiles(repo, files){
-        console.log("getfiles")
-        var promises = [];
-        for (i in files) {
-            //Only get JS files for now
-            var fileType = files[i].split('.').pop()
-            if (fileType === 'js' || fileType === "java"){
-                console.log(files[i])
-                promises.push(repo.getContents('master', files[i], false));
-            }
-        }
-        return Promise.all(promises);
-    }
 
 };
+
+function getRepoFiles(repo) {
+    console.log("Getting all files in repo: " + repo.__fullname);
+
+    return new Promise(
+            function(resolve, reject) {
+                getRepoFilePaths(repo).then(function(files){
+                    console.log("   Getting contents for all files....")
+                    getFiles(repo, files).then(function(content){
+
+                        var results = [];
+                        for (i in content){
+                            var file = content[i].data;
+
+                            var code = {
+                                path    : file.path,
+                                url     : file.html_url,
+                                content : new Buffer(file.content, 'base64').toString("ascii")
+                            }
+
+                            results.push(code);
+                        }
+                        console.log("    Got contents for repo: " + repo.__fullname);
+                        resolve(results);
+                    });
+                })
+            }
+
+        )
+}
+
+function getRepoFilePaths(repo){
+    return new Promise(
+            function(resolve, reject) {
+                repo.getRef('').then(function(ref){
+                    var treeSha = ref.data[0].object.sha;
+                    repo.getTree(treeSha+"?recursive=1").then(function(tree){
+                        tree = tree.data.tree;
+                        var files = tree.filter(function(a){ return a.type === 'blob'}).map(function(a){ return a.path});
+                        resolve(files);
+                    });
+                });
+
+            }
+        );
+};
+
+function getFiles(repo, files){
+    console.log("getfiles")
+    var promises = [];
+    for (i in files) {
+        //Only get JS files for now
+        var fileType = files[i].split('.').pop()
+        if (fileType === 'js' || fileType === "java"){
+            console.log(files[i])
+            promises.push(repo.getContents('master', files[i], false));
+        }
+    }
+    return Promise.all(promises);
+}
 
 
 

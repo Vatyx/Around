@@ -21,10 +21,17 @@ achievementSchema.statics.initAchievements = function() {
 }
 
 achievementSchema.statics.checkFile = function(user, language, fileString) {
-    console.log(allAchievements[0].language)
-    fulfilledAchievements = allAchievements.filter(function(a) { return a.language === language})
-                                           .filter(function(a){ console.log(a.pattern);console.log(RegExp(a.pattern).test(fileString)); return RegExp(a.pattern).test(fileString)})
-                                           // .filter(function(a) { return (user.achievements.indexOf(a) === -1) });
+    console.log(allAchievements[0].language);
+    console.log(user.achievements)
+    console.log("s")
+    fulfilledAchievements = allAchievements.filter(function(a){ return a.language === language})
+                                           .filter(function(a){ return RegExp(a.pattern).test(fileString)})
+                                           .filter(function(a) {
+                                                for (i in user.achievements){
+                                                    if (user.achievements[i].id == a._id) return false;
+                                                }
+                                                return true
+                                        });
 
     console.log(JSON.stringify(fulfilledAchievements));
 
