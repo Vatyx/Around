@@ -5,6 +5,7 @@ var Achievements = require('../models/Achievement.js');
 Achievements.initAchievements();
 
 var Pulling = require('./pull-controller.js');
+// Pulling.start();
 var mongoose = require('mongoose');
 
 

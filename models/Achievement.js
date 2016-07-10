@@ -20,9 +20,7 @@ achievementSchema.statics.initAchievements = function() {
 }
 
 achievementSchema.statics.checkFile = function(user, language, fileString) {
-    console.log(allAchievements[0].language);
-    console.log(user.achievements)
-    console.log("s")
+    console.log("Checking if File has new achievements")
     fulfilledAchievements = allAchievements.filter(function(a){ return a.language === language})
                                            .filter(function(a){ return RegExp(a.pattern).test(fileString)})
                                            .filter(function(a) {

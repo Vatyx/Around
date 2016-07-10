@@ -35,7 +35,7 @@ router.get('/callback',
     passport.authenticate('github', { failureRedirect: '/' }),
         function(req, res) {
             console.log("call")
-            res.redirect('/user/testtest'); //TODO change
+            res.redirect('/'); //TODO change
         }
     );
 

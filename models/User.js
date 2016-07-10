@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 var GitHub = require('github-api');
 var Achievements = require('../models/Achievement.js');
 
-
+var GITHUB_TOKEN = "a1cddf2b65c9e7f6c6fb6ff76da312ec065ef454";
 
 var userSchema = mongoose.Schema({
     githubUsername : {type: String, required: true},
@@ -28,7 +28,6 @@ userSchema.methods.initAll = function(){
     console.log("user init")
     var self = this;
     this.getAllCode(function(codes){
-        console.log(codes);
         codes.forEach(function(code){
             newAchievements = Achievements.checkFile(self, "JavaScript", code.content);
             console.log(newAchievements);
@@ -40,6 +39,22 @@ userSchema.methods.initAll = function(){
 
 };
 
+userSchema.methods.scanRepo = function(username, repoName) {
+    var gh = new GitHub({token : GITHUB_TOKEN});
+    var repo = gh.getRepo(username, repoName);
+    var self = this;
+
+    getRepoFiles(repo).then(function(codes){
+        codes.forEach(function(code){
+            newAchievements = Achievements.checkFile(self, "JavaScript", code.content);
+            console.log(newAchievements);
+
+            self.completeAchievements(newAchievements, code.content, code.url);
+        });
+    });
+
+
+};
 
 userSchema.methods.completeAchievements = function(achievements, fileString, repoUrl) {
     console.log("b")
@@ -69,7 +84,7 @@ userSchema.methods.getAllCode = function(cb) { //TODO change statics to methods
     console.log(this.githubToken);
     var gh = new GitHub({
         // token: this.githubToken
-        token : "3d650cc683a1d37ca745b24f48941ed5e7696cbc"
+        token : GITHUB_TOKEN
     });
 
 
