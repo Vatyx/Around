@@ -12,6 +12,7 @@
 		<link rel="stylesheet" href="http://www.w3schools.com/lib/w3.css">
 		<link rel='stylesheet' href='/stylesheets/prism.css'>
 		<link rel='stylesheet' href='/stylesheets/dashboard.css'>
+		<link rel="stylesheet" href="/bower_components/animate.css/animate.min.css">
 	</head>
 
 	<body>
@@ -35,6 +36,14 @@
 			<div class="list">
 				<language v-for="language in languages" :language="language">
 				</language>
+			</div>
+		</div>
+
+		<div class="unique" style="position: absolute; left: 0; top: 5%; display: none;" id="lists">
+			<div class="list"> 
+				<achievement v-for="achievement in achievements" :achievement="achievement"></achievement>
+			</div>
+			<div class="list">
 			</div>
 		</div>
 		
@@ -61,8 +70,24 @@
 			</div>
 		</template>
 
+		<template id="achievement-template">
+			<div class="small-achievement">
+				<div class="img">
+				</div>
+				<div class="body-achievement">
+					<div class="title-achievement">
+						<div style="float:left;">{{achievement.title}}</div> 
+						<div style="float:right; font-size: 30px;">{{achievement.points}} points</div>
+					</div>
+					<div class="desc-achievement">
+						{{achievement.desc}}
+					</div>
+				</div>
+			</div>
+		</template>
+
 		<template id="language-template">
-			<div class="language">
+			<div class="language" onclick="nextPage()" id={{language.language}}>
 				<div class="language-top">
 					<div class="language-img">
 						<img width="100px"src={{language.imgsrc}}>
@@ -79,6 +104,7 @@
 			</div>
 		</template>
 		<script src="/bower_components/vue/dist/vue.min.js"></script>
+		<script src="/bower_components/jquery/dist/jquery.min.js"></script>
 		<script src="/scripts/prism.js"></script>
 		<script src="/scripts/script.js"></script>
 	</body>
