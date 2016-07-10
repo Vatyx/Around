@@ -100,10 +100,6 @@ var ex = new Vue({
 	el: "#expanding",
 	data: {
 	expands: [{
-				name: "Test",
-				points: 15,
-				desc: "sdafasdfasdf",
-				sample: "asdfhasdklfjasd"
 			}]
 	}
 });
@@ -148,6 +144,7 @@ $.get("/dashboard/info", function(data){
 
 	temp = allAchievements.filter(function(a) {return (a.completed === true)});
 	obj = {imgsrc:"https://camo.githubusercontent.com/eb464a60a4a47f8b600aa71bfbc6aff3fe5c5392/68747470733a2f2f7261772e6769746875622e636f6d2f766f6f646f6f74696b69676f642f6c6f676f2e6a732f6d61737465722f6a732e706e67", language: "Javascript", progress: (temp.length / allAchievements.length) * 100}
+	vm.languages = [obj];
 });
 
 setInterval(function () {
@@ -155,12 +152,14 @@ $.get("/dashboard/info", function(data){
 	console.log(data);
 	achievements = [];
 	var goals = [];
+	var names = [];
 	var allAchievements = data["allAchievements"];
 	for(var i = 0; i < allAchievements.length; i++) {
 		for(var j = 0; j < data["completedAchievements"].length; j++) {
 			if(data["completedAchievements"][j]["id"] == allAchievements[i]["_id"]) {
 				allAchievements[i].color = "lightgreen";	
 				allAchievements[i].url = data["completedAchievements"][j]["url"];
+				names.push(allAchievements[i].name);
 				console.log("got it");
 			}
 			else {
@@ -174,11 +173,11 @@ $.get("/dashboard/info", function(data){
 	}
 	vm.goals = goals;
 	another.achievements = achievements;
-
+	
 	temp = allAchievements.filter(function(a) {return (a.completed === true)});
 	obj = {imgsrc:"https://camo.githubusercontent.com/eb464a60a4a47f8b600aa71bfbc6aff3fe5c5392/68747470733a2f2f7261772e6769746875622e636f6d2f766f6f646f6f74696b69676f642f6c6f676f2e6a732f6d61737465722f6a732e706e67", language: "Javascript", progress: (temp.length / allAchievements.length) * 100}
-	
 });
+	vm.languages = [obj];
 	
 }, 5000);
 
@@ -186,8 +185,21 @@ function loadNew(id) {
 	var str = id;
 $.get("/dashboard/info", function(data){
 	var allAchievements = data["allAchievements"];
-	temp = allAchievements.filter(function(a) { return (a.name === str)});
-	ex.expands = temp;
+	for(var i = 0; i < allAchievements.length; i++) {
+		for(var j = 0; j < data["completedAchievements"].length; j++) {
+			if(data["completedAchievements"][j]["id"] == allAchievements[i]["_id"]) {
+				allAchievements[i].color = "lightgreen";	
+				allAchievements[i].url = data["completedAchievements"][j]["url"];
+				console.log("here it");
+			}
+			else {
+				allAchievements[i].color = "black";
+			}
+		}
+		temp = allAchievements.filter(function(a) { return (a.name === str)});
+		console.log(temp.url, "yuep");
+		ex.expands = temp;
+	}
 });
 }
 
