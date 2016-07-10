@@ -14,7 +14,7 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-router.post('/save', userController.mock);
+router.post('/save', userController.save);
 router.get('/me', userController.me);
 router.get('/achivements/:language', userController.achievements);
 router.get('/eventtest', pullController.start);

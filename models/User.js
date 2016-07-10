@@ -1,44 +1,41 @@
 var mongoose = require('mongoose');
 var GitHub = require('github-api');
+var Achievements = require('../models/Achievement.js');
+
 
 
 var userSchema = mongoose.Schema({
     githubUsername : {type: String, required: true},
     githubEmail    : {type: String, required: true},
     githubToken    : {type: String, required: true},
+    achievements   : [{
+        id : {type: String, required: true},
+        url: {type: String, required: true}
+    }]
 });
-    // achievements   : [{
-    //     id : {type: String, required: true},
-    //     url: {type: String, required: true}
-    // }]
     //TODO Add more stuff
 
 userSchema.statics.findOrCreate = function(parameters, callback){
     mongoose.model('User').findOne({"githubUsername": parameters.githubUsername}, function(err, user){
         if (err) return callback(err);
         if(user) return callback(null, user);
-        // mongoose.model('User').create(parameters, function (err, user){user.init(); callback(err,user)});
-        mongoose.model('User').create(parameters, callback);
-
+        mongoose.model('User').create(parameters, function (err, user){user.initAll(); callback(err,user)});
     });
 };
 
 //Looks through all of user's code to complete intial achievements
 userSchema.methods.initAll = function(){
     console.log("user init")
-    // this.getAllCode(function(code){
-    //     console.log(code);
+    this.getAllCode(function(codes){
+        console.log(codes);
+        codes.forEach(function(code){
 
-    // });
+        });
+
+    });
 
 
 };
-
-userSchema.methods.noWay = function(){
-    console.log("NO FUCKIG WAY")
-}
-
-
 
 
 //Get all code in user's repo

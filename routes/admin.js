@@ -6,6 +6,7 @@ var Achievements = require('../models/Achievement.js');
 
 /* GET home page. */
 router.post('/addAchievements', function(req, res, next) {
+    res.send(401);
     console.log("adding achievement");
 
     var achievements = req.body.achievements;
