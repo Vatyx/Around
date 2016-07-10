@@ -8,7 +8,7 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var auth = require('./routes/auth');
-
+var dashboard = require('./routes/dashboard');
 
 var app = express();
 
@@ -18,8 +18,8 @@ var expressSession = require('express-session');
 var passport = require('passport');
 
 // view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+//app.set('views', path.join(__dirname, 'views'));
+//app.set('view engine', 'jade');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
@@ -28,6 +28,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/bower_components',  express.static(__dirname + '/bower_components'));
 
 app.use(expressSession({secret: 'secretstuff', resave: true, saveUninitialized: true}));
 app.use(passport.initialize());
@@ -41,7 +42,7 @@ require('./models/Achievement');
 app.use('/', routes);
 app.use('/user', users);
 app.use('/auth', auth);
-
+app.use('/dashboard', dashboard);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

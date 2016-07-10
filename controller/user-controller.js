@@ -1,7 +1,9 @@
+'use strict'
+
 var User = require('../models/User.js');
 
-UserController = {};
-
+var UserController = {};
+var AllAchievements = [];
 
 UserController.me = function(req, res, render) {
     console.log("User test function");
@@ -13,36 +15,26 @@ UserController.me = function(req, res, render) {
 
 UserController.mock = function(req, res, render) {
     console.log("User mock function");
-    console.log(req.body.language);
-    console.log(req.body.fileString);
+	var achivements = {test: "test string"};
 
-	var achivements = {
-        pendingAchievements: [
-            {
-                name : "hello world",
-                description: "cool dude",
-                image : "no"
-            },
-            {
-                name : "hello world2",
-                description: "cool dude2",
-                image : "no2"
-            },
-
-        ]
-    };
-
+    console.log(req.user)
     res.json(achivements);
 
 };
 
 UserController.save = function(req, res, render) {
     console.log("User save function");
-	var achivements = {test: "save string"};
+	var language = req.body.language;
+	var fileString = req.body.fileString;
 
-    console.log(req.user)
-    res.json(achivements);
+    User.findOne({"githubUsername": user.githubUsername}, function(err, newUser){
+        if (err) return;
 
+		var pendingAchievements = AllAchievements.filter(function(a) { return (a.language === language || a.language === "general") })
+												 .filter(function(a) { return (user.achievements.indexOf(a) === -1) })
+												 .filter(function(a) { return (a.check(fileString)) });
+    	res.json(pendingAchievements);
+	});
 };
 
 //Function to test getAllCode. TODO Remove.
@@ -55,4 +47,18 @@ UserController.test = function(req, res, next) {
 };
 
 
+UserController.achievements = function(req, res, render) {
+	// language = req.params.language
+	// languageAchievements = [];
+	// for each (var achievement in AllAchievements) {
+	// 	if (achievement.language === language) {
+	// 		languageAchievements.push(achievement)
+	// 	}
+	// }
+	// console.log(languageAchievements);
+	// res.json(languageAchievements)
+
+	var Achievements = require('../models/Achievements')
+	Achievements.find({language: req.params.language}, function(err, a){console.log(a)})
+};
 module.exports = UserController;

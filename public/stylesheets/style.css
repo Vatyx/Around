@@ -1,8 +1,43 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+html, body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+}
+
+body {	
+	font: 14px 'Poiret One', Helvetica, Arial, sans-serif;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: url("../images/wallpaper.jpg");
+	background-size: cover;
+}
+
+#bleh {
+	min-width: 100%;
+	min-height: 50%;
+	background-color:white;
+}
+
+#login-container {
+	text-align: center;
+	font-size: 80px;
+	min-width: 35%;
+	min-height: 50%;
+}
+
+h1 {
+	font-family: 'Poiret One';
+	font-size: 100px;
+}
+
+#button {
+	margin: 100px 0;
+	text-align: center;
+	padding: 10px 0px;
+	font-size: 30px;
 }
 
 a {
-  color: #00B7FF;
+	color: #00B7FF;
 }
