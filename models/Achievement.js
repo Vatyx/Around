@@ -1,8 +1,4 @@
 var mongoose = require('mongoose');
-<<<<<<< HEAD
-=======
-require('mongoose-function')(mongoose);
->>>>>>> fc81cd549cac967d78965d53aefb5dae48398ee8
 
 var achievementSchema = mongoose.Schema({
     name        : {type: String,   required: true},
