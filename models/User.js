@@ -11,8 +11,10 @@ userSchema.statics.findOrCreate = function(parameters, callback){
     mongoose.model('User').findOne({"githubUsername": parameters.githubUsername}, function(err, user){
         if (err) return callback(err);
         if(user) return callback(null, user);
-        mongoose.model('User').create(parameters, callback);
+        mongoose.model('User').create(parameters, function (err, user){user.init; callback(err,user)});
     });
 };
+
+userSchema.methods.init = function(){};
 
 module.exports = mongoose.model('User', userSchema);
